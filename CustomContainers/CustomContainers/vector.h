@@ -2,32 +2,49 @@
 template<typename T>
 class vectorclass
 {
-	T* vector_pointer;  
+	T* vecPointer;  
 	size_t vector_size, vector_capacity;
 
 public:
-	vectorclass() :vector_pointer(NULL), vector_size(0), vector_capacity(0) {}
-
-
+	//Constructor
+	vectorclass() :vecPointer(NULL), vector_size(0), vector_capacity(0) {}
+	//Destructor
 	~vectorclass()  
 	{
-		delete[] vector_pointer;
+		delete[] vecPointer;
 	}
-
-	vectorclass& operator =(vectorclass other) 
+	//Returns Vectors size
+	size_t size() const
 	{
-		swap(*this, other);
-		return *this;
+		return vector_size;
 	}
-
-
+	//Returns Vectors Total Capacity
+	size_t capacity() const
+	{
+		return vector_capacity;
+	}
+	// Changes Total Capacity of Vector to at least newcapacity
+	void reserve(size_t newcapacity) 
+	{
+		
+		if (newcapacity > vector_capacity)
+		{
+			newcapacity = newcapacity * 2;
+			T* temp = new T[newcapacity];
+			std::copy(vecPointer, vecPointer + vector_capacity, temp);
+			delete[] vecPointer;
+			vecPointer = temp;
+			vector_capacity = newcapacity;
+		}
+	}
+	// Resizes Vector to newsize 
 	void resize(const size_t &newsize) 
 	{
 		if (newsize < vector_size)
 		{
 			for (size_t i = newsize; i < vector_size; i++)
 			{
-				vector_pointer[i].~T();
+				vecPointer[i].~T();
 			}
 		}
 		else if (newsize > vector_capacity)
@@ -36,70 +53,70 @@ public:
 		}
 		vector_size = newsize;
 	}
-
-	void reserve(size_t newcapacity) 
-	{
-		
-		if (newcapacity > vector_capacity)
-		{
-			T* temp = new T[newcapacity];
-			std::copy(vector_pointer, vector_pointer + vector_capacity, temp);
-			delete[] vector_pointer;
-			vector_pointer = temp;
-			vector_capacity = newcapacity;
-		}
-	}
-
+	// Adds val to the back of the vector
 	void push_back(const T &val)
 	{
 		if (vector_capacity <= vector_size)
 			reserve(vector_capacity);
-		vector_pointer[vector_size++] = val;
+		vecPointer[vector_size++] = val;
 	}
-
+	// Removes val from the back of the vector
 	void pop_back() 
 	{
-		
+		--vector_size;
 	}
+	// Inserts val into pos of the vector
 	void insert(const size_t& pos, const T& val)
 	{
-		
+		if (vector_capacity <= vector_size)  
+			reserve(vector_size);
+		vector_size++;
+		for (size_t i = vector_size - 1; i > pos; i--)  
+		{
+			vecPointer[i] = vecPointer[i - 1];
+		}
+		vecPointer[pos] = val;
 	}
 
-	size_t size() const
-	{
-		return vector_size;
-	}
-
-	size_t capacity() const
-	{
-		return vector_capacity;
-	}
-
+	
+	// Returns [pos] 
 	T& operator [](const size_t &pos)
 	{
-		return vector_pointer[pos];
+		return vecPointer[pos];
 	}
-
-
+	// Overloaded = operator
+	vectorclass& operator =(vectorclass other) 
+	{
+		swap(*this, other);
+		return *this;
+	}
+	// Returns pointer at pos
+	T& at(const size_t& pos)  
+	{
+		return vecPointer[pos];
+	}
+	// Emptys entire vector
 	bool empty() const
 	{
 		return vector_size == 0;
 	}
-
-	T& at(const size_t& pos)  
-	{
-		
-	}
-
-
+	// Erases Vectors contents at pos
 	void erase(const size_t& pos) 
 	{
-		
+		vecPointer[pos].~T();
+		for (size_t i = pos; i < vector_size - 1; i++)
+		{
+			vecPointer[i] = vecPointer[i + 1]; 
+		}
+		--vector_size;
 	}
-
+	// Clears entire vector 
 	void clear()
 	{
-
+		for (size_t i = 0; i < vector_size; i++)
+		{
+			vecPointer[i].~T();
+		}
+		vector_size = 0;
 	}
 };
