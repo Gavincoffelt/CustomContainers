@@ -35,5 +35,11 @@
     <ClInclude Include="node.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="objectpool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="objectpoolresource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

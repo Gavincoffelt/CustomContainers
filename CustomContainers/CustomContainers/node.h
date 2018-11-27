@@ -2,7 +2,7 @@
 template <typename T>
 class myNode 
 {
-	friend class List<T>;
+
 
 public:
 	myNode(T);
