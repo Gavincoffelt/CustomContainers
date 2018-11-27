@@ -28,7 +28,7 @@ public:
 template <typename T>
 myQueue<T>::myQueue(int size)
 {
-	arr = new X[size];
+	arr = new T[size];
 	capacity = size;
 	front = 0;
 	rear = -1;

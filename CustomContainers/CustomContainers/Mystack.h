@@ -4,7 +4,7 @@
 #define default_value 10
 using namespace std;
 
-template< class T > class myStack
+template< typename T > class myStack
 {
 public:
 	myStack(int = default_value);
@@ -28,7 +28,7 @@ template< class T > myStack<T>::myStack(int x) :size(x),values(new T[size]),	ind
 	
 }
 // Pushes 'x' to the stack if the stack is not full.
-template< class T > bool myStack<T>::push(T x)
+template< typename T> bool myStack<T>::push(T x)
 {
 	bool p = 0;
 	if (!myStack<T>::isFull())
@@ -41,7 +41,7 @@ template< class T > bool myStack<T>::push(T x)
 	
 }
 // Pop Function to remove last item in stack.
-template< class T > T myStack<T>::pop()
+template< typename T > T myStack<T>::pop()
 {
 	T val = -1;
 	if (!myStack<T>::isEmpty())
@@ -57,7 +57,7 @@ template< class T > T myStack<T>::pop()
 
 }
 // bool to check if stack is empty.
-template< class T > bool myStack<T>::isEmpty()
+template< typename T > bool myStack<T>::isEmpty()
 {
 	if (index == -1)
 		return 1;
@@ -65,7 +65,7 @@ template< class T > bool myStack<T>::isEmpty()
 		return 0; 
 }
 // bool to check if stack is full.
-template< class T > bool myStack<T>::isFull()
+template< typename T > bool myStack<T>::isFull()
 {
 	if ((index + 1) == size)
 		return 1;

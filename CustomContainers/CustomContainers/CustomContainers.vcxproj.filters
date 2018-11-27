@@ -29,5 +29,11 @@
     <ClInclude Include="myQueue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="linkedlist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="node.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
