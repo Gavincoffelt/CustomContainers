@@ -27,15 +27,15 @@ public:
 	void reserve(size_t newcapacity) 
 	{
 		
-		if (newcapacity > vector_capacity)
-		{
-			newcapacity = newcapacity * 2;
-			T* temp = new T[newcapacity];
-			std::copy(vecPointer, vecPointer + vector_capacity, temp);
-			delete[] vecPointer;
-			vecPointer = temp;
-			vector_capacity = newcapacity;
+		T *temp = new T[newcapacity];
+		if (!(newcapacity > vector_capacity)) { return; }
+
+		for (size_t i = 0; i < vector_size; i++) {
+			temp[i] = vecPointer[i];
 		}
+		vector_capacity = newcapacity;
+		delete[] vecPointer;
+		vecPointer = temp;
 	}
 	// Resizes Vector to newsize 
 	void resize(const size_t &newsize) 

@@ -16,14 +16,15 @@ public:
 	T pop();
 	bool isEmpty();
 	bool isFull();
+	size_t size();
 private:
-	int size;
+	int stacksize;
 	T *values;
 	int index;
 
 };
 // Default Constructor.
-template< class T > myStack<T>::myStack(int x) :size(x),values(new T[size]),	index(-1)
+template< class T > myStack<T>::myStack(int x) :stacksize(x),values(new T[stacksize]),index(-1)
 {
 	
 }
@@ -33,7 +34,7 @@ template< typename T> bool myStack<T>::push(T x)
 	bool p = 0;
 	if (!myStack<T>::isFull())
 	{
-		index += 1;
+		index++;
 		values[index] = x;
 		p = 1;
 	}
@@ -47,7 +48,7 @@ template< typename T > T myStack<T>::pop()
 	if (!myStack<T>::isEmpty())
 	{
 		val = values[index];
-		index -= 1;
+		index--;
 	}
 	else
 	{
@@ -67,9 +68,16 @@ template< typename T > bool myStack<T>::isEmpty()
 // bool to check if stack is full.
 template< typename T > bool myStack<T>::isFull()
 {
-	if ((index + 1) == size)
+	if ((index + 1) == stacksize)
 		return 1;
 	else
 		return 0;
 	
 }
+
+template<typename T>
+inline size_t myStack<T>::size()
+{
+	return stacksize;
+}
+

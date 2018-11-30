@@ -1,48 +1,72 @@
 #pragma once
-#include <string>
-#include <iostream>
-#include <list>
-#include "objectpoolresource.h"
+template<typename T>
+class tObjectPool
+{	
+	size_t poolcapacity;
+	tObjectPool();                       // default initializes the object pool
+	tObjectPool(size_t initialCapacity); // initializes the pool to have a set number of objects
+	~tObjectPool();                      // destroys all objects
 
-class myObjectPool
-{
-public:
-	std::list<Resource*> resources;
+	T* pool;                            // all objects stored in the pool
+	bool* free;                         // indicates whether an object is available
 
-	static myObjectPool* instance;
-	myObjectPool() {}
+	T* retrieve();                      // returns a pointer to an object that will be used (returns null if none available)
+	void recycle(T* obj);               // accepts a pointer that can be used in the future
 
-
-	static myObjectPool* getInstance()
-	{
-		if (instance == 0)
-		{
-			instance = new myObjectPool;
-		}
-		return instance;
-	}
-
-	Resource* getResource()
-	{
-		if (resources.empty())
-		{
-			return new Resource;
-		}
-		else
-		{
-			std::cout << "Reusing" << std::endl;
-			Resource* resource = resources.front();
-			resources.pop_front();
-			return resource;
-		}
-	}
-	void returnResource(Resource* object)
-
-	{
-		object->reset();
-
-		resources.push_back(object);
-	}
-	
+	size_t capacity();                  // returns the total number of objects that this pool can provide
 };
-myObjectPool* myObjectPool::instance = 0;
+
+
+
+template<typename T>
+inline tObjectPool<T>::tObjectPool()
+{
+	poolcapacity = 10;
+	new T[poolcapacity];
+	free = true;
+}
+
+template<typename T>
+inline tObjectPool<T>::tObjectPool(size_t initialCapacity)
+{
+	poolcapacity = initialCapacity;
+	new T[initialCapacity];
+	free = true;
+}
+
+template<typename T>
+inline tObjectPool<T>::~tObjectPool()
+{
+	delete pool;
+}
+
+template<typename T>
+inline T * tObjectPool<T>::retrieve()
+{
+	for (int i = 0; i < poolcapacity; i++) {
+		if (free[i]) {
+			free[i] = false;
+			return *pool[i];
+		}
+	}
+
+	return NULL;
+}
+
+template<typename T>
+inline void tObjectPool<T>::recycle(T * obj)
+{
+	for (int i = 0; i < poolcapacity; i++) {
+
+		if (obj == pool[i]) {
+			free[i] = true;
+			break;
+		}
+	}
+}
+
+template<typename T>
+inline size_t tObjectPool<T>::capacity()
+{
+	return poolcapacity;
+}

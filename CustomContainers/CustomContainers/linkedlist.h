@@ -1,87 +1,130 @@
 #pragma once
-#include "node.h"
+//#include "node.h"
 #include <iostream>
 using namespace std;
 template <typename T>
-class List 
-{
-public:
-	List();
-	~List();
-	void NewNode(T); 
+
+class linkedlist {
+	struct node {
+	public:
+		T data;
+	node * next;
+	};
 private:
-	myNode<T> *startPtr;
-	myNode<T> *endPtr;
-	bool isEmpty();  
+	node * head, *tail;
+	
+public:
+	linkedlist() {
+		head = NULL;
+		tail = NULL;
+	}
+	~linkedlist() {
+		delete head;
+		delete tail;
+	}
+	void push(const T& val);
+	void pop_front();
+	T& front();
+	void display();
+	bool empty();
+	void clear();
+	void remove(const T& val);
 };
 
 
-
-template <typename T>
-List<T>::List() 
+template<typename T>
+inline void linkedlist<T>::push(const T & val)
 {
-	startPtr = NULL;
-	endPtr = NULL;
-}
-
-template <typename T>
-List<T>::~List()
-{
-	if (!isEmpty()) 
+	node *temp = new node;
+	temp->data = val;
+	temp->next = NULL;
+	if (head == NULL)
 	{
-		myNode<T> *currentPtr = startPtr;
-		myNode<T> *tempPtr;
-
-		while (currentPtr != 0)
-		{
-			tempPtr = currentPtr;
-			currentPtr = currentPtr->nextPtr;
-			delete tempPtr;
-		}
+		head = temp;
+		tail = temp;
+		temp = NULL;
 	}
-}
-
-template <typename T>
-bool List<T>::isEmpty()
-{
-	if (startPtr == NULL && endPtr == NULL) 
-		return 1;
 	else
-		return 0;
+	{
+		tail->next = temp;
+		tail = temp;
+	}
 }
 
-template <typename T>
-void List<T>::NewNode(T dataIn)
+template<typename T>
+inline void linkedlist<T>::pop_front()
 {
-	if (isEmpty()) 
+	node *temp = new node;
+	temp = head;
+	head = head->next;
+	delete temp;
+}
+
+template<typename T>
+inline T & linkedlist<T>::front()
+{
+	return head->data;
+}
+
+template<typename T>
+inline void linkedlist<T>::display()
+{
+	node *temp = new node;
+	temp = head;
+	while (temp != NULL)
 	{
-		insertBegin(dataIn);
+		cout << temp->data << "\t";
+		temp = temp->next;
 	}
-	else 
-	{
-		if (dataIn < startPtr->data) 
-		{
-			insertBegin(dataIn);
+	delete temp;
+}
+
+template<typename T>
+inline bool linkedlist<T>::empty()
+{
+	if (head == NULL && tail == NULL) {
+		return true;
+	}
+	else {
+		return false;
+	}
+
+}
+
+template<typename T>
+inline void linkedlist<T>::clear()
+{
+	while (head != NULL) {
+		delete head;
+		head = head->next;
+	}
+}
+
+template<typename T>
+inline void linkedlist<T>::remove(const T & val)
+{
+	do {
+		if (head->data == val) {
+			node * temp = head;
+			head = head->next;
+			
 		}
-		else if (dataIn >= endPtr->data) 
-		{
-			insertEnd(dataIn);
+				
+	} while (head->data == val);
+	node *temp = head->next;
+	node * hold = head;
+	while (temp != NULL) {
+		if (temp->data == val) {
+			hold->next = temp->next;
+			temp = hold->next;
+
 		}
-		else 
-		{
-			myNode<T> * currentPtr = startPtr;
-			myNode<T> * newPtr = new myNode<T>(dataIn);
-			while (currentPtr != endPtr) 
-			{
-				if ((newPtr->data < currentPtr->nextPtr->data) && (newPtr->data >= currentPtr->data)) 
-				{
-					myNode<T> * next = currentPtr->nextPtr;
-					currentPtr->nextPtr = newPtr; 
-					newPtr->nextPtr = next; 
-					break;
-				}
-				currentPtr = currentPtr->nextPtr; 
-			}
+		else {
+			hold = hold->next;
+			hold = temp;
+			temp = temp->next;
+
 		}
+
 	}
 }
